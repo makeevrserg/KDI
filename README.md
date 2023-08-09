@@ -36,29 +36,28 @@ Firstly, create a module interface, which will contains necessary dependencies
 interface PluginModule : Module {
     val simpleDatabase: Single<Database>
     val pluginTranslation: Single<PluginTranslation>
+
+    class Impl : PluginModule {
+        override val simpleDatabase: Single<Database> = Single {
+            TODO()
+        }
+        override val pluginTranslation: Single<PluginTranslation> = Single {
+            TODO()
+        }
+    }
 }
 
+/**
+ * Or you can use delegation to get rid of [Single] class
+ */
 interface DelegatePluginModule : Module {
     val simpleDatabase: Database
     val pluginTranslation: PluginTranslation
-}
-```
 
-After that, you will need to create implementation
-
-```kotlin
-object PluginModuleImpl : PluginModule {
-    override val simpleDatabase: Single<Database> = Single {
-        TODO()
+    class Impl : DelegatePluginModule {
+        val simpleDatabase: Database by Single { TODO() }
+        val pluginTranslation: PluginTranslation by Single { TODO() }
     }
-    override val pluginTranslation: Single<PluginTranslation> = Single {
-        TODO()
-    }
-}
-
-class DelegatePluginModuleImpl : DelegatePluginModule {
-    val simpleDatabase: Database by Single { TODO() }
-    val pluginTranslation: PluginTranslation by Single { TODO() }
 }
 ```
 
@@ -66,7 +65,7 @@ class DelegatePluginModuleImpl : DelegatePluginModule {
 
 ```kotlin
 /**
- * This if your function, in which you need [PluginModule.simpleDatabase]
+ * This is your function, in which you need [PluginModule.simpleDatabase]
  * and [PluginModule.pluginTranslation]
  */
 fun myPluginFunction(module: PluginModule) {
@@ -80,7 +79,7 @@ fun myPluginFunction(module: PluginModule) {
 /**
  * This is our custom subModule, which contains factory, which will return random UUID
  */
-object SubModule : Module {
+class SubModule : Module {
     val randomUUID = Factory {
         UUID.randomUUID()
     }
@@ -93,18 +92,13 @@ object RootModule : Module {
     /**
      * Here we getting via kotlin's ReadProperty SubModule;
      */
-    val subModule by SubModule
+    private val subModule = SubModule()
 
-    /**
-     * Thing above actually equals to this commented expression
-     */
-//    val subModule: SubModule
-//        get() = SubModule
     /**
      * Here we remember uuid, provided by SubModule's factory
      */
     val uuid = Single {
-        subModule.randomUUID.build()
+        subModule.randomUUID.create()
     }
 }
 ```
@@ -120,3 +114,23 @@ That's it! As easy as it looks
 - `Provider` - is a fun interface which can provider some data for your dependency
 - `Reloadable` - can be used to create reloadable components with kotlin object
 - `Single` - is a singleton value which will be a unique and single instant
+
+## Experimental WiredModule
+Dependencies can be remembered via WiredModule
+```kotlin
+class RootWiredModule : WiredModule by WiredModule.Default() {
+    val intSingle = Single { 10 }.remember()
+    val intProvider = Provider { 11 }.remember()
+    val intFactory = Factory { 13 }.remember()
+    val intReloadable = Reloadable { Random.nextInt() }.remember()
+}
+
+class MySubModule(
+    private val rootWiredModule: RootWiredModule
+) : Module {
+    val singleInt: Int by rootWiredModule.single()
+    val intProvider: Int by rootWiredModule.provider()
+    val intFactory: Int = rootWiredModule.factory<Int>().create()
+    val intReloadable: Int by rootWiredModule.reloadable()
+}
+```
