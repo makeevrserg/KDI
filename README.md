@@ -118,11 +118,11 @@ That's it! As easy as it looks
 ## Experimental WiredModule
 Dependencies can be remembered via WiredModule
 ```kotlin
-class RootWiredModule : WiredModule by WiredModule.Default() {
-    val intSingle = Single { 10 }.remember()
-    val intProvider = Provider { 11 }.remember()
-    val intFactory = Factory { 13 }.remember()
-    val intReloadable = Reloadable { Random.nextInt() }.remember()
+class RootWiredModule : WiredModule by WiredModule.wire() {
+    val intSingle = Single { 10 }.also(::remember)
+    val intProvider = Provider { 11 }.also(::remember)
+    val intFactory = Factory { 13 }.also(::remember)
+    val intReloadable = Reloadable { Random.nextInt() }.also(::remember)
 }
 
 class MySubModule(
