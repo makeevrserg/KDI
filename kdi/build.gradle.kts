@@ -27,7 +27,11 @@ kotlin {
 
     sourceSets {
         /* Main source sets */
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation("co.touchlab:kermit:2.0.0-RC5") // Add latest version
+            }
+        }
         val nativeMain by creating
         val jvmMain by getting
         val androidMain by getting
