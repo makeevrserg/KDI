@@ -1,3 +1,5 @@
+import ru.astrainteractive.gradleplugin.util.ProjectProperties.projectInfo
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -133,5 +135,5 @@ kotlin {
 }
 
 android {
-    namespace = "ru.astrainteractive.klibs.kdi"
+    namespace = "${projectInfo.group}.kdi"
 }
