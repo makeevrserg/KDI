@@ -1,7 +1,7 @@
 [versions]
 # Kotlin
 kotlin-version = "1.9.0"
-makeevrserg-gradleplugin = "0.0.10"
+makeevrserg-gradleplugin = "0.5.1"
 gradle-android = "7.4.2"
 [libraries]
 makeevrserg-gradleplugin-convention = { module = "ru.astrainteractive.gradleplugin:convention", version.ref = "makeevrserg-gradleplugin" }
