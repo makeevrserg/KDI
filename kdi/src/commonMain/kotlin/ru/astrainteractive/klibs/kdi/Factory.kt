@@ -7,4 +7,7 @@ package ru.astrainteractive.klibs.kdi
  */
 fun interface Factory<out T> {
     fun create(): T
+    fun interface Parametrized<out T, P> {
+        fun create(param: P): T
+    }
 }

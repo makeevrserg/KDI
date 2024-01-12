@@ -24,7 +24,5 @@ class Lateinit<T : Any>(private val isMultipleInitializationAllowed: Boolean) : 
     }
 
     override val value: T
-        get() {
-            return instance ?: error("Value is not initialized yet")
-        }
+        get() = instance ?: error("Value is not initialized yet")
 }
