@@ -29,7 +29,7 @@ kotlin {
         /* Main source sets */
         val commonMain by getting {
             dependencies {
-                implementation("co.touchlab:kermit:2.0.3") // Add latest version
+                implementation("co.touchlab:kermit:2.0.4") // Add latest version
             }
         }
         val nativeMain by creating
