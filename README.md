@@ -1,6 +1,15 @@
 [![version](https://img.shields.io/maven-central/v/ru.astrainteractive.klibs/kdi?style=flat-square)](https://github.com/makeevrserg/KDI)
 [![kotlin_version](https://img.shields.io/badge/kotlin-1.9.0-blueviolet?style=flat-square)](https://github.com/makeevrserg/KDI)
 
+# Discontinued
+
+Turns out, the most features of this repository can be used without it!
+
+The least useful feature was `Reloadable`. But look at this new [ReloadableFlow](https://gist.github.com/makeevrserg/e4e779bb5ca9019e01a3f1ffe38c1fd8) which can replace it.
+
+Look out for other libraries and try find something useful!
+
+
 ## KDI
 
 KDI is super lightweight Kotlin Multiplatform Manual DI library
